@@ -1,9 +1,7 @@
-function main(){
-    const idNode = document.getElementById("orderId");
-    idNode.innerText = localStorage.getItem("orderId");
-    console.log(localStorage.getItem("orderId"))
-    localStorage.clear();
-    console.log("SALUT COMMENT TU VAS");
-}
+// récupération de l'id de la commande
+let orderId = localStorage.getItem('responseOrder');
+console.log(orderId);
 
-main(); 
+// récupération du prix total de la commande
+let totalPrice = localStorage.getItem('totalPrice');
+console.log(totalPrice);
