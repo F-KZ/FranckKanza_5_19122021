@@ -96,22 +96,22 @@ ProductsCart();
 function Totals() {
 
     /* Récupération du total des quantités */
-    var elemsQtt = document.getElementsByClassName('itemQuantity');
-    var myLength = elemsQtt.length,
+    let elemsQtt = document.getElementsByClassName('itemQuantity');
+    let myLength = elemsQtt.length,
         totalPrice = 0;
 
-    for (var i = 0; i < myLength; ++i) {
+    for (let i = 0; i < myLength; ++i) {
         totalPrice += elemsQtt[i].valueAsNumber;
     }
 
-    var productTotalQuantity = document.getElementById('totalQuantity');
+    let productTotalQuantity = document.getElementById('totalQuantity');
     productTotalQuantity.innerHTML = totalPrice;
 
 
     /* Récupération du prix total */
     totalPrice = 0;
 
-    for (var i = 0; i < myLength; ++i) {
+    for (let i = 0; i < myLength; ++i) {
         totalPrice += (elemsQtt[i].valueAsNumber * produitLocalStorage[i].prixProduit);
     }
 

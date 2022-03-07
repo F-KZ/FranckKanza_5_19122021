@@ -2,7 +2,7 @@ fillSection();
 
 /* je recupere les articles de l'API */
 async function getArticles() {
-    var articlesCatch = await fetch("http://localhost:3000/api/products")
+    let articlesCatch = await fetch("http://localhost:3000/api/products")
     return await articlesCatch.json();
 }
 
@@ -16,11 +16,11 @@ async function fillSection() {
                 /* Insertion de "a" */
                 let productLink = document.createElement("a");
                 document.querySelector(".items").appendChild(productLink);
-                var str = "https://waytolearnx.com/t.html?name=alex-babtise&age=25&address=paris";
-                var url = new URL(str);
-                var search_params = new URLSearchParams(url.search);
+                let str = "https://waytolearnx.com/t.html?name=alex-babtise&age=25&address=paris";
+                let url = new URL(str);
+                let search_params = new URLSearchParams(url.search);
                 if (search_params.has('name')) {
-                    var name = search_params.get('name');
+                    let name = search_params.get('name');
 
                 }
                 productLink.href = `product.html?id=${articles[article]._id}`;
