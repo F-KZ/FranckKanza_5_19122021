@@ -265,11 +265,13 @@ getForm();
 
 // TODO envoie des donnés du clients au local storage à faire !
 function postForm() {
+    
     console.log("post form");
     const btnCommander = document.getElementById("order");
 
     //Ecouter le panier
     btnCommander.addEventListener("click", (event) => {
+        event.preventDefault();
 
         //Récupération des coordonnées du formulaire client
         const inputName = document.getElementById('firstName');
@@ -300,6 +302,7 @@ function postForm() {
             products: idProducts,
         }
         console.log('Body', order)
+
 // défini les paramètres de notre requête
         const header = new Headers();
         header.append('Content-Type', 'application/json');
@@ -320,12 +323,13 @@ function postForm() {
 
         fetch(url,options).then((response) => {
             console.log("tout est ok!");
-            Response.json().then((date) => {
+            response.json().then((data) => {
+                console.log(data)
 
-                localStorage.clear();
+                localStorage.removeItem('produit');
 
 
-                document.location.href = "confirmation.html";
+                document.location.href = "confirmation.html?orderId=" + data.orderId;
             })
                 .catch((err) => {
                     console.log(err);
