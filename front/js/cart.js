@@ -288,6 +288,7 @@ function postForm() {
         console.log("produits");
         console.log(idProducts);
 
+// On crée les objets contact et produits recquis pour l'envoi vers l'API
         const order = {
             contact: {
                 firstName: inputName.value,
@@ -299,7 +300,7 @@ function postForm() {
             products: idProducts,
         }
         console.log('Body', order)
-
+// défini les paramètres de notre requête
         const header = new Headers();
         header.append('Content-Type', 'application/json');
         console.log("init header!");

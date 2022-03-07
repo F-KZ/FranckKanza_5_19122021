@@ -124,3 +124,4 @@ Pour consulter votre panier, cliquez sur OK`)){
     }}
     });
 }
+ localStorage.clear();
