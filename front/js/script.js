@@ -6,49 +6,49 @@ async function getArticles() {
     return await articlesCatch.json();
 }
 
-    /* Distribution des données de l'API */
+/* Distribution des données de l'API */
 async function fillSection() {
-    await getArticles ()
-    .then(function (articles){
-        console.table(articles);
-        for (let article in articles) {
+    await getArticles()
+        .then(function (articles) {
+            console.table(articles);
+            for (let article in articles) {
 
-            /* Insertion de "a" */
-            let productLink = document.createElement("a");
-            document.querySelector(".items").appendChild(productLink);
-            var str = "https://waytolearnx.com/t.html?name=alex-babtise&age=25&address=paris";
-var url = new URL(str);
-var search_params = new URLSearchParams(url.search); 
-if(search_params.has('name')) {
-  var name = search_params.get('name');
-  console.log(name)
-}
-            productLink.href = `product.html?id=${articles[article]._id}`;
+                /* Insertion de "a" */
+                let productLink = document.createElement("a");
+                document.querySelector(".items").appendChild(productLink);
+                var str = "https://waytolearnx.com/t.html?name=alex-babtise&age=25&address=paris";
+                var url = new URL(str);
+                var search_params = new URLSearchParams(url.search);
+                if (search_params.has('name')) {
+                    var name = search_params.get('name');
 
-            /* Insertion de "article" */
-            let productArticle = document.createElement("article");
-            productLink.appendChild(productArticle);
+                }
+                productLink.href = `product.html?id=${articles[article]._id}`;
 
-            /* Insertion de l'image */
-            let productImg = document.createElement("img");
-            productArticle.appendChild(productImg);
-            productImg.src = articles[article].imageUrl;
-            productImg.alt = articles[article].altTxt;
+                /* Insertion de "article" */
+                let productArticle = document.createElement("article");
+                productLink.appendChild(productArticle);
 
-            /* Insertion du "h3" */
-            let productName = document.createElement("h3");
-            productArticle.appendChild(productName);
-            productName.classList.add("productName");
-            productName.innerHTML = articles[article].name;
+                /* Insertion de l'image */
+                let productImg = document.createElement("img");
+                productArticle.appendChild(productImg);
+                productImg.src = articles[article].imageUrl;
+                productImg.alt = articles[article].altTxt;
 
-            /* Insertion de la description "p" */
-            let productDescription = document.createElement("p");
-            productArticle.appendChild(productDescription);
-            productDescription.classList.add("productName");
-            productDescription.innerHTML = articles[article].description;
-        }
-    })
-    .catch (function(error){
-        return error;
-    });
+                /* Insertion du "h3" */
+                let productName = document.createElement("h3");
+                productArticle.appendChild(productName);
+                productName.classList.add("productName");
+                productName.innerHTML = articles[article].name;
+
+                /* Insertion de la description "p" */
+                let productDescription = document.createElement("p");
+                productArticle.appendChild(productDescription);
+                productDescription.classList.add("productName");
+                productDescription.innerHTML = articles[article].description;
+            }
+        })
+        .catch(function (error) {
+            return error;
+        });
 }

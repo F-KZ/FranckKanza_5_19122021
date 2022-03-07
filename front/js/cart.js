@@ -106,7 +106,7 @@ function Totals() {
 
     var productTotalQuantity = document.getElementById('totalQuantity');
     productTotalQuantity.innerHTML = totalPrice;
-    console.log(totalPrice);
+
 
     /* Récupération du prix total */
     totalPrice = 0;
@@ -117,7 +117,7 @@ function Totals() {
 
     let productTotalPrice = document.getElementById('totalPrice');
     productTotalPrice.innerHTML = totalPrice;
-    console.log(totalPrice);
+
 }
 Totals();
 
@@ -265,8 +265,8 @@ getForm();
 
 // TODO envoie des donnés du clients au local storage à faire !
 function postForm() {
-    
-    console.log("post form");
+
+
     const btnCommander = document.getElementById("order");
 
     //Ecouter le panier
@@ -287,10 +287,9 @@ function postForm() {
         for (let i = 0; i < produitLocalStorage.length; i++) {
             idProducts.push(produitLocalStorage[i].idProduit);
         }
-        console.log("produits");
-        console.log(idProducts);
 
-// On crée les objets contact et produits recquis pour l'envoi vers l'API
+
+        // On crée les objets contact et produits recquis pour l'envoi vers l'API
         const order = {
             contact: {
                 firstName: inputName.value,
@@ -301,30 +300,28 @@ function postForm() {
             },
             products: idProducts,
         }
-        console.log('Body', order)
 
-// défini les paramètres de notre requête
+
+        // défini les paramètres de notre requête
         const header = new Headers();
         header.append('Content-Type', 'application/json');
-        console.log("init header!");
-        console.log(header);
+
 
 
         const options = {
             method: 'POST',
             body: JSON.stringify(order),
-            headers:header 
+            headers: header
 
         };
-        console.log("option");
-        console.log(options);
+
 
         let url = 'http://localhost:3000/api/products/order';
 
-        fetch(url,options).then((response) => {
-            console.log("tout est ok!");
+        fetch(url, options).then((response) => {
+
             response.json().then((data) => {
-                console.log(data)
+
 
                 localStorage.removeItem('produit');
 
@@ -332,7 +329,7 @@ function postForm() {
                 document.location.href = "confirmation.html?orderId=" + data.orderId;
             })
                 .catch((err) => {
-                    console.log(err);
+
                     alert("Problème avec fetch : " + err.message);
                 });
         })
