@@ -37,6 +37,8 @@ function getPost(article) {
     // Modification du titre "h1"
     let productName = document.getElementById('title');
     productName.innerHTML = article.name;
+    let name2 = document.getElementsByTagName('title')[0];
+    name2.innerHTML = article.name;
 
     // Modification du prix
     let productPrice = document.getElementById('price');
@@ -69,12 +71,13 @@ function addToCart(article) {
 
             //Recupération du choix de la quantité
             let choixQuantite = quantityPicked.value;
+            
 
             //Récupération des options de l'article à ajouter au panier
             let optionsProduit = {
                 idProduit: idProduct,
                 couleurProduit: choixCouleur,
-                quantiteProduit: Number(choixQuantite),
+                quantiteProduit: parseInt(choixQuantite),
                 nomProduit: article.name,
                 prixProduit: article.price,
                 descriptionProduit: article.description,
@@ -86,42 +89,49 @@ function addToCart(article) {
             let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
 
             //fenêtre pop-up
-            const popupConfirmation = () => {
-                if (window.confirm(`Votre commande de ${choixQuantite} ${article.name} ${choixCouleur} est ajoutée au panier
-Pour consulter votre panier, cliquez sur OK`)) {
-                    window.location.href = "cart.html";
-                }
-            }
+            //   const popupConfirmation = () => {
+            //  if (window.confirm(`Votre commande de ${choixQuantite} ${article.name} ${choixCouleur} est ajoutée au panier
+            //Pour consulter votre panier, cliquez sur OK`)) {
+            // window.location.href = "cart.html";
+            //   }
+            //   }
+
+
+            // ajout produit local storage 
+           // const ajoutProduitLocalStorage = (produitAajouter) => {
+              /*  produitLocalStorage.push(produitAajouter);
+                localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
+            }; */
 
             //Importation dans le local storage
             //Si le panier comporte déjà au moins 1 article
             if (produitLocalStorage) {
-                const resultFind = produitLocalStorage.find(
-                    (el) => el.idProduit === idProduct && el.couleurProduit === choixCouleur);
-                //Si le produit commandé est déjà dans le panier
-                if (resultFind) {
-                    let newQuantite =
-                        parseInt(optionsProduit.quantiteProduit) + parseInt(resultFind.quantiteProduit);
-                    resultFind.quantiteProduit = newQuantite;
-                    localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-                    console.table(produitLocalStorage);
-                    popupConfirmation();
-                    //Si le produit commandé n'est pas dans le panier
-                } else {
-                    produitLocalStorage.push(optionsProduit);
-                    localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-                    console.table(produitLocalStorage);
-                    popupConfirmation();
-                }
-                //Si le panier est vide
-            } else {
-                produitLocalStorage = [];
-                produitLocalStorage.push(optionsProduit);
-                localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-                console.table(produitLocalStorage);
-                popupConfirmation();
+                const updatedResult = produitLocalStorage.map((el) => {
+                    if (el && el.nomProduit === article.name && el.couleurProduit === choixCouleur) {
+                        el.quantiteProduit = parseInt(el.quantiteProduit) + parseInt(optionsProduit.quantiteProduit);
+                       
+                    }
+                    return el
+                });
+                console.log("updatedResult");
+                console.log(updatedResult);
+                localStorage.setItem("produit", JSON.stringify(updatedResult)); 
+
+
+
             }
+            
+
+         else {
+            produitLocalStorage = [];
+            produitLocalStorage.push(optionsProduit);
+                localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
+            console.table(produitLocalStorage);
+
+
+
         }
-    });
+    }
+});
 }
-localStorage.clear();
+
