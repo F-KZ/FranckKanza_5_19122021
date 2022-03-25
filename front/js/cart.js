@@ -2,138 +2,98 @@
 let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
 console.table(produitLocalStorage);
 const positionEmptyCart = document.querySelector("#cart__items");
-let prixProduits = []
 
+// Récupération des articles de l'API
+function updateCartWithProducts(article, currentProductIndex) {
+    // Insertion de l'élément "article"
+    let productArticle = document.createElement("article");
+    document.querySelector("#cart__items").appendChild(productArticle);
+    productArticle.className = "cart__item";
+    productArticle.setAttribute('data-id', produitLocalStorage[currentProductIndex].idProduit);
 
-/* Si le panier est vide */
-function ProductsCart() {
-    if (produitLocalStorage === null || produitLocalStorage == 0) {
-        const emptyCart = `<p>Votre panier est vide</p>`;
-        positionEmptyCart.innerHTML = emptyCart;
-    } else {
-        for (let produit in produitLocalStorage) {
-                fetch("http://localhost:3000/api/products/" )
-                
-                    .then((res) => res.json())
-                    .then(function (data) {
-                        const article = data ;
-                        
-                        console.log(article);
-                        console.log(produit);
-                        console.log(article[produit].name);
-                        
-                    
-                   
+    // Insertion de l'élément "div"
+    let productDivImg = document.createElement("div");
+    productArticle.appendChild(productDivImg);
+    productDivImg.className = "cart__item__img";
 
-            
-                    
-            // Insertion de l'élément "article"
-            let productArticle = document.createElement("article");
-            document.querySelector("#cart__items").appendChild(productArticle);
-            productArticle.className = "cart__item";
-            productArticle.setAttribute('data-id', produitLocalStorage[produit].idProduit);
+    // Insertion de l'image
+    let productImg = document.createElement("img");
+    productDivImg.appendChild(productImg);
+    productImg.src = produitLocalStorage[currentProductIndex].imgProduit;
+    productImg.alt = produitLocalStorage[currentProductIndex].altImgProduit;
 
-            // Insertion de l'élément "div"
-            let productDivImg = document.createElement("div");
-            productArticle.appendChild(productDivImg);
-            productDivImg.className = "cart__item__img";
+    // Insertion de l'élément "div"
+    let productItemContent = document.createElement("div");
+    productArticle.appendChild(productItemContent);
+    productItemContent.className = "cart__item__content";
 
-            // Insertion de l'image
-            let productImg = document.createElement("img");
-            productDivImg.appendChild(productImg);
-            console.log(produitLocalStorage)
-            productImg.src = article[produit].imageUrl;
-            productImg.alt = article[produit].altTxt;
+    // Insertion de l'élément "div"
+    let productItemContentTitlePrice = document.createElement("div");
+    productItemContent.appendChild(productItemContentTitlePrice);
+    productItemContentTitlePrice.className = "cart__item__content__titlePrice";
 
-            // Insertion de l'élément "div"
-            let productItemContent = document.createElement("div");
-            productArticle.appendChild(productItemContent);
-            productItemContent.className = "cart__item__content";
+    // Insertion du titre h3
+    let productTitle = document.createElement("h2");
+    productItemContentTitlePrice.appendChild(productTitle);
+    productTitle.innerHTML = produitLocalStorage[currentProductIndex].nomProduit;
 
-            // Insertion de l'élément "div"
-            let productItemContentTitlePrice = document.createElement("div");
-            productItemContent.appendChild(productItemContentTitlePrice);
-            productItemContentTitlePrice.className = "cart__item__content__titlePrice";
+    // Insertion de la couleur
+    let productColor = document.createElement("p");
+    productTitle.appendChild(productColor);
+    productColor.innerHTML = produitLocalStorage[currentProductIndex].couleurProduit;
+    productColor.style.fontSize = "20px";
 
-            // Insertion du titre h3
-            let productTitle = document.createElement("h2");
-            productItemContentTitlePrice.appendChild(productTitle);
-            productTitle.innerHTML = article[produit].name;
+    // Insertion du prix
+    let productPrice = document.createElement("p");
+    productItemContentTitlePrice.appendChild(productPrice);
+    productPrice.innerHTML = article.price + " €";
 
-            // Insertion de la couleur
-            let productColor = document.createElement("p");
-            productTitle.appendChild(productColor);
-            productColor.innerHTML = produitLocalStorage[produit].couleurProduit;
-            productColor.style.fontSize = "20px";
+    // Insertion de l'élément "div"
+    let productItemContentSettings = document.createElement("div");
+    productItemContent.appendChild(productItemContentSettings);
+    productItemContentSettings.className = "cart__item__content__settings";
 
-            // Insertion du prix
-            let productPrice = document.createElement("p");
-            productItemContentTitlePrice.appendChild(productPrice);
-            productPrice.innerHTML = article[produit].price + " €";
+    // Insertion de l'élément "div"
+    let productItemContentSettingsQuantity = document.createElement("div");
+    productItemContentSettings.appendChild(productItemContentSettingsQuantity);
+    productItemContentSettingsQuantity.className = "cart__item__content__settings__quantity";
 
-            // Insertion de l'élément "div"
-            let productItemContentSettings = document.createElement("div");
-            productItemContent.appendChild(productItemContentSettings);
-            productItemContentSettings.className = "cart__item__content__settings";
+    // Insertion de "Qté : "
+    let productQte = document.createElement("p");
+    productItemContentSettingsQuantity.appendChild(productQte);
+    productQte.innerHTML = "Qté : ";
 
-            // Insertion de l'élément "div"
-            let productItemContentSettingsQuantity = document.createElement("div");
-            productItemContentSettings.appendChild(productItemContentSettingsQuantity);
-            productItemContentSettingsQuantity.className = "cart__item__content__settings__quantity";
+    // Insertion de la quantité
+    let productQuantity = document.createElement("input");
+    productItemContentSettingsQuantity.appendChild(productQuantity);
+    productQuantity.value = produitLocalStorage[currentProductIndex].quantiteProduit;
+    productQuantity.className = "itemQuantity";
+    productQuantity.setAttribute("type", "number");
+    productQuantity.setAttribute("min", "1");
+    productQuantity.setAttribute("max", "100");
+    productQuantity.setAttribute("name", "itemQuantity");
 
-            // Insertion de "Qté : "
-            let productQte = document.createElement("p");
-            productItemContentSettingsQuantity.appendChild(productQte);
-            productQte.innerHTML = "Qté : ";
+    // Insertion de l'élément "div"
+    let productItemContentSettingsDelete = document.createElement("div");
+    productItemContentSettings.appendChild(productItemContentSettingsDelete);
+    productItemContentSettingsDelete.className = "cart__item__content__settings__delete";
 
-            // Insertion de la quantité
-            let productQuantity = document.createElement("input");
-            productItemContentSettingsQuantity.appendChild(productQuantity);
-            productQuantity.value = produitLocalStorage[produit].quantiteProduit;
-            productQuantity.className = "itemQuantity";
-            productQuantity.setAttribute("type", "number");
-            productQuantity.setAttribute("min", "1");
-            productQuantity.setAttribute("max", "100");
-            productQuantity.setAttribute("name", "itemQuantity");
-
-            // Insertion de l'élément "div"
-            let productItemContentSettingsDelete = document.createElement("div");
-            productItemContentSettings.appendChild(productItemContentSettingsDelete);
-            productItemContentSettingsDelete.className = "cart__item__content__settings__delete";
-
-            // Insertion de "p" supprimer
-            let productSupprimer = document.createElement("p");
-            productItemContentSettingsDelete.appendChild(productSupprimer);
-            productSupprimer.className = "deleteItem";
-            productSupprimer.innerHTML = "Supprimer";
-            
-            prixProduits.push(productPrice);
-            
-                    });
-
-                    Totals(prixProduits); 
-            
-
-           
-           
-        }
-        
-    }
+    // Insertion de "p" supprimer
+    let productSupprimer = document.createElement("p");
+    productItemContentSettingsDelete.appendChild(productSupprimer);
+    productSupprimer.className = "deleteItem";
+    productSupprimer.innerHTML = "Supprimer";
 }
-ProductsCart();
 
-function Totals() {
-
+function Totals(prixProduits) {
     /* Récupération du total des quantités */
-    let elemsQtt = document.getElementById('totalQuantity');
+    let elemsQtt = document.getElementsByClassName('itemQuantity');
     let myLength = elemsQtt.length,
         totalPrice = 0;
 
     for (let i = 0; i < myLength; ++i) {
         totalPrice += elemsQtt[i].valueAsNumber;
     }
-    
-     
 
     let productTotalQuantity = document.getElementById('totalQuantity');
     productTotalQuantity.innerHTML = totalPrice;
@@ -143,17 +103,44 @@ function Totals() {
     totalPrice = 0;
 
     for (let i = 0; i < myLength; ++i) {
-    totalPrice += (elemsQtt[i].valueAsNumber * article[i].prixProduit);
+        totalPrice += (elemsQtt[i].valueAsNumber *prixProduits[i]);
     }
 
     let productTotalPrice = document.getElementById('totalPrice');
     productTotalPrice.innerHTML = totalPrice;
 
 }
-Totals();
+
+/* Si le panier est vide */
+function ProductsCart() {
+    if (produitLocalStorage === null || produitLocalStorage === 0) {
+        positionEmptyCart.innerHTML = `<p>Votre panier est vide</p>`;
+    } else {
+        let prixProduits = [];
+        for (let produit in produitLocalStorage) {
+            fetch("http://localhost:3002/api/products/" + produitLocalStorage[produit].idProduit)
+                .then((res) => {
+                    return res.json();
+                }).then(async function (resultatAPI) {
+                article = await resultatAPI;
+                if (article) {
+                    updateCartWithProducts(article, produit);
+                    prixProduits.push(article.price);
+                    Totals(prixProduits);
+                    modifyQtt(prixProduits);
+                    deleteProduct(prixProduits);
+                }
+            }).catch((error) => {
+                console.error(error);
+            })
+        }
+    }
+}
+
+ProductsCart();
 
 /* Modification d'une quantité de produit */
-function modifyQtt() {
+function modifyQtt(prixProduits) {
     let qttModif = document.querySelectorAll(".itemQuantity");
 
     for (let k = 0; k < qttModif.length; k++) {
@@ -176,10 +163,11 @@ function modifyQtt() {
         })
     }
 }
+
 modifyQtt();
 
 /* Suppression d'un produit */
-function deleteProduct() {
+function deleteProduct(prixProduits) {
     let btn_supprimer = document.querySelectorAll(".deleteItem");
 
     for (let j = 0; j < btn_supprimer.length; j++) {
@@ -200,6 +188,7 @@ function deleteProduct() {
         })
     }
 }
+
 deleteProduct();
 
 //Instauration formulaire avec regex
@@ -292,6 +281,7 @@ function getForm() {
         }
     };
 }
+
 getForm();
 
 // TODO envoie des donnés du clients au local storage à faire !
@@ -310,7 +300,6 @@ function postForm() {
         const inputAdress = document.getElementById('address');
         const inputCity = document.getElementById('city');
         const inputMail = document.getElementById('email');
-
 
 
         //Construction d'un tableau depuis le local storage
@@ -338,7 +327,6 @@ function postForm() {
         header.append('Content-Type', 'application/json');
 
 
-
         const options = {
             method: 'POST',
             body: JSON.stringify(order),
@@ -347,7 +335,7 @@ function postForm() {
         };
 
 
-        let url = 'http://localhost:3000/api/products/order';
+        let url = 'http://localhost:3002/api/products/order';
 
         fetch(url, options).then((response) => {
 
