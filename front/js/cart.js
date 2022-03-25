@@ -2,6 +2,8 @@
 let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
 console.table(produitLocalStorage);
 const positionEmptyCart = document.querySelector("#cart__items");
+let prixProduits = []
+
 
 /* Si le panier est vide */
 function ProductsCart() {
@@ -10,6 +12,21 @@ function ProductsCart() {
         positionEmptyCart.innerHTML = emptyCart;
     } else {
         for (let produit in produitLocalStorage) {
+                fetch("http://localhost:3000/api/products/" )
+                
+                    .then((res) => res.json())
+                    .then(function (data) {
+                        const article = data ;
+                        
+                        console.log(article);
+                        console.log(produit);
+                        console.log(article[produit].name);
+                        
+                    
+                   
+
+            
+                    
             // Insertion de l'élément "article"
             let productArticle = document.createElement("article");
             document.querySelector("#cart__items").appendChild(productArticle);
@@ -24,8 +41,9 @@ function ProductsCart() {
             // Insertion de l'image
             let productImg = document.createElement("img");
             productDivImg.appendChild(productImg);
-            productImg.src = produitLocalStorage[produit].imgProduit;
-            productImg.alt = produitLocalStorage[produit].altImgProduit;
+            console.log(produitLocalStorage)
+            productImg.src = article[produit].imageUrl;
+            productImg.alt = article[produit].altTxt;
 
             // Insertion de l'élément "div"
             let productItemContent = document.createElement("div");
@@ -40,7 +58,7 @@ function ProductsCart() {
             // Insertion du titre h3
             let productTitle = document.createElement("h2");
             productItemContentTitlePrice.appendChild(productTitle);
-            productTitle.innerHTML = produitLocalStorage[produit].nomProduit;
+            productTitle.innerHTML = article[produit].name;
 
             // Insertion de la couleur
             let productColor = document.createElement("p");
@@ -51,7 +69,7 @@ function ProductsCart() {
             // Insertion du prix
             let productPrice = document.createElement("p");
             productItemContentTitlePrice.appendChild(productPrice);
-            productPrice.innerHTML = produitLocalStorage[produit].prixProduit + " €";
+            productPrice.innerHTML = article[produit].price + " €";
 
             // Insertion de l'élément "div"
             let productItemContentSettings = document.createElement("div");
@@ -88,7 +106,18 @@ function ProductsCart() {
             productItemContentSettingsDelete.appendChild(productSupprimer);
             productSupprimer.className = "deleteItem";
             productSupprimer.innerHTML = "Supprimer";
+            
+            prixProduits.push(productPrice);
+            
+                    });
+
+                    Totals(prixProduits); 
+            
+
+           
+           
         }
+        
     }
 }
 ProductsCart();
@@ -96,13 +125,15 @@ ProductsCart();
 function Totals() {
 
     /* Récupération du total des quantités */
-    let elemsQtt = document.getElementsByClassName('itemQuantity');
+    let elemsQtt = document.getElementById('totalQuantity');
     let myLength = elemsQtt.length,
         totalPrice = 0;
 
     for (let i = 0; i < myLength; ++i) {
         totalPrice += elemsQtt[i].valueAsNumber;
     }
+    
+     
 
     let productTotalQuantity = document.getElementById('totalQuantity');
     productTotalQuantity.innerHTML = totalPrice;
@@ -112,7 +143,7 @@ function Totals() {
     totalPrice = 0;
 
     for (let i = 0; i < myLength; ++i) {
-        totalPrice += (elemsQtt[i].valueAsNumber * produitLocalStorage[i].prixProduit);
+    totalPrice += (elemsQtt[i].valueAsNumber * article[i].prixProduit);
     }
 
     let productTotalPrice = document.getElementById('totalPrice');

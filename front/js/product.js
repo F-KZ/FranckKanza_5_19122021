@@ -13,6 +13,8 @@ function getArticle() {
   fetch("http://localhost:3000/api/products/" + idProduct)
     .then((res) => {
       return res.json();
+      
+      
     })
 
     // Répartition des données de l'API dans le DOM
@@ -78,11 +80,11 @@ function addToCart(article) {
         idProduit: idProduct,
         couleurProduit: choixCouleur,
         quantiteProduit: parseInt(choixQuantite),
-        nomProduit: article.name,
+       // nomProduit: article.name,
        // prixProduit: article.price,
-        descriptionProduit: article.description,
-        imgProduit: article.imageUrl,
-        altImgProduit: article.altTxt
+      //  descriptionProduit: article.description,
+       // imgProduit: article.imageUrl,
+       // altImgProduit: article.altTxt
       };
 
       //Initialisation du local storage
