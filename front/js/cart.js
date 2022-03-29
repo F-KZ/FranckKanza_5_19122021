@@ -141,7 +141,11 @@ ProductsCart();
 
 /* Modification d'une quantité de produit */
 function modifyQtt(prixProduits) {
+    // Pointer tous les input "nb de produits" identifiés par la classe ".itemQuantity"
     let qttModif = document.querySelectorAll(".itemQuantity");
+
+    // Créer un tableau temporaire qui est l'image fidèle de localStorage
+    all_products = JSON.parse(localStorage.getItem('produit')); 
 
     for (let k = 0; k < qttModif.length; k++) {
         qttModif[k].addEventListener("change", (event) => {
@@ -149,25 +153,29 @@ function modifyQtt(prixProduits) {
 
             /* Selection de l'element à modifier en fonction de son id ET sa couleur */
             let quantityModif = produitLocalStorage[k].quantiteProduit;
-            let qttModifValue = qttModif[k].valueAsNumber;
+            let qttModifValue = qttModif[k].valueAsNumber;  
+            el = produitLocalStorage[k];
+                
+            if (el.qttModifValue != quantityModif) {
+                // Modifier l'index du tableau temporaire relatif à la quantité du produit
+                all_products[k].quantiteProduit = qttModifValue;
 
-            const resultFind = produitLocalStorage.find((el) => el.qttModifValue !== quantityModif);
+                // Mettre à jour le localStorage conformément à la valeur du tableau temporaire
+                localStorage.setItem('produit', JSON.stringify(all_products))
 
-            resultFind.quantiteProduit = qttModifValue;
-            produitLocalStorage[k].quantiteProduit = resultFind.quantiteProduit;
-
-            localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-
-            /* refresh rapide */
-            location.reload();
+                // Recharger la page 
+                location.reload();
+            }            
         })
     }
 }
 
-modifyQtt();
-
 /* Suppression d'un produit */
 function deleteProduct(prixProduits) {
+    // Créer un tableau temporaire qui est l'image fidèle de localStorage
+    all_products = JSON.parse(localStorage.getItem('produit')); 
+
+    // Pointer tous les boutons "supprimer" identifiés par la classe "deleteItem"
     let btn_supprimer = document.querySelectorAll(".deleteItem");
 
     for (let j = 0; j < btn_supprimer.length; j++) {
@@ -176,20 +184,21 @@ function deleteProduct(prixProduits) {
 
             /* Selection de l'element à supprimer en fonction de son id ET sa couleur */
             let idDelete = produitLocalStorage[j].idProduit;
-            let colorDelete = produitLocalStorage[j].couleurProduit;
 
-            produitLocalStorage = produitLocalStorage.filter(el => el.idProduit !== idDelete || el.couleurProduit !== colorDelete);
+            if (all_products[j].idProduit == idDelete) {
 
-            localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
+                // Enlever le contenu de l'index du tableau temporaire
+                all_products.splice(j,1);
 
-            /* Alerte produit supprimé et refresh */
-            alert("Ce produit a bien été supprimé du panier");
-            location.reload();
+                // Mettre à jour le localStorage conformément à la valeur du tableau temporaire
+                localStorage.setItem('produit', JSON.stringify(all_products));
+
+                // Recharger la page 
+                location.reload();
+            }
         })
     }
 }
-
-deleteProduct();
 
 //Instauration formulaire avec regex
 function getForm() {
